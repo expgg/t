@@ -22,8 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
         let lastY = 0;
         const smoothingFactor = 0.1;
         const maxAngle = 15;
+        let isActive = false;
+        let resetTimeout;
     
         window.addEventListener('deviceorientation', (e) => {
+            // Clear any existing reset timeout
+            if (resetTimeout) {
+                clearTimeout(resetTimeout);
+            }
+
+            // Set active state
+            isActive = true;
+
             // Check if device is in portrait mode
             const isPortrait = window.innerHeight > window.innerWidth;
             
@@ -41,6 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Apply smooth transition
             container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+
+            // Set timeout to reset position
+            resetTimeout = setTimeout(() => {
+                if (isActive) {
+                    isActive = false;
+                    container.style.transition = 'transform 0.5s ease';
+                    container.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+                    setTimeout(() => {
+                        container.style.transition = 'transform 0.1s ease';
+                    }, 500);
+                }
+            }, 100);
         });
     }
 
