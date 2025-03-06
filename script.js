@@ -18,17 +18,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Gyroscope effect for mobile devices
     if (window.DeviceOrientationEvent) {
+        let lastX = 0;
+        let lastY = 0;
+        const smoothingFactor = 0.1;
+        const maxAngle = 15;
+    
         window.addEventListener('deviceorientation', (e) => {
             // Check if device is in portrait mode
             const isPortrait = window.innerHeight > window.innerWidth;
             
-            // Adjust rotation based on device orientation
-            const tiltX = isPortrait ? e.beta : e.gamma;
-            const tiltY = isPortrait ? e.gamma : e.beta;
+            // Get raw tilt values
+            const rawX = isPortrait ? e.beta - 45 : e.gamma;
+            const rawY = isPortrait ? e.gamma : e.beta - 45;
+            
+            // Apply smoothing
+            lastX = lastX + (rawX - lastX) * smoothingFactor;
+            lastY = lastY + (rawY - lastY) * smoothingFactor;
             
             // Limit the rotation angles
-            const rotateX = Math.min(Math.max(tiltX * 0.5, -10), 10);
-            const rotateY = Math.min(Math.max(tiltY * 0.5, -10), 10);
+            const rotateX = Math.min(Math.max(lastX * 0.5, -maxAngle), maxAngle);
+            const rotateY = Math.min(Math.max(lastY * 0.5, -maxAngle), maxAngle);
             
             // Apply smooth transition
             container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
