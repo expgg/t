@@ -334,8 +334,8 @@ body {
     .container {
         max-width: 400px;
         max-height: none;
-        height: 100svh;
-        margin: 0;
+        height: 95vh;
+        margin: 10px;
     }
     
     .profile-section {
