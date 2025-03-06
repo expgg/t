@@ -335,11 +335,13 @@ body {
         max-width: 400px;
         max-height: none;
         height: 95vh;
-        margin: 10px;
+        margin: 2px;
+        padding: 5px;
     }
     
     .profile-section {
         margin-top: -50px;
+        padding: 0 5px;
     }
 
     .glowing-orb {
@@ -349,5 +351,15 @@ body {
     
     .social-item, .project-item {
         height: auto;
+    }
+
+    .tab-content {
+        margin: 5px;
+        padding: 5px;
+    }
+
+    .grid-container {
+        gap: 8px;
+        padding: 3px;
     }
 }
